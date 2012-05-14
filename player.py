@@ -2,10 +2,11 @@ import pygame
 from pygame.locals import *
 
 class Player:
-    def __init__(self):
+    def __init__(self, screen):
         self.killShot = False
         self.targeting = False
         self.targets = []
+        self.screen = screen
         
         
     def update(self):
@@ -21,10 +22,10 @@ class Player:
     def addTarget(self, targetLocation):
         self.targets.append(targetLocation)
         
-    def draw(self, screen):
+    def draw(self):
         if self.targeting:
             for x in range(len(self.targets)):
                 try:
-                    pygame.draw.line(screen, (255,255,255), self.targets[x], self.targets[x+1], 10)
+                    pygame.draw.line(self.screen, (255,255,255, 50), self.targets[x], self.targets[x+1], 10)
                 except IndexError:
-                    pygame.draw.line(screen, (255,255,255), self.targets[x], pygame.mouse.get_pos(), 10)
+                    pygame.draw.line(self.screen, (255,255,255, 50), self.targets[x], pygame.mouse.get_pos(), 10)

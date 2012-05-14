@@ -43,10 +43,7 @@ def main():
     
     Baddie.containers = baddies, all
     baddieChance = 1000
-    player = Player()
-    Baddie(player, 100, SCREENRECT.width, SCREENRECT.height)
-    Baddie(player, 50, SCREENRECT.width, SCREENRECT.height)
-    
+    player = Player(screen)
     
     
     clock = pygame.time.Clock()        
@@ -71,7 +68,7 @@ def main():
         all.update(player.killShot)
         player.update()
         #Draw
-        player.draw(screen)
+        player.draw()
         all.draw(screen)
         pygame.display.flip()
 
