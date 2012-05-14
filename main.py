@@ -3,6 +3,7 @@ from pygame.locals import *
 
 from baddie import Baddie
 from spritesheet import SpriteSheet
+from player import Player
 
 try:
     import android
@@ -41,15 +42,20 @@ def main():
     all = pygame.sprite.RenderPlain()
     
     Baddie.containers = baddies, all
+    baddieChance = 1000
+    player = Player()
+    Baddie(player, 100, SCREENRECT.width, SCREENRECT.height)
+    Baddie(player, 50, SCREENRECT.width, SCREENRECT.height)
     
-    Baddie(100, SCREENRECT.width, SCREENRECT.height)
-    Baddie(50, SCREENRECT.width, SCREENRECT.height)
+    
     
     clock = pygame.time.Clock()        
     
     killShot = False
     targeting = False
+    initial_target = None
     while 1:
+        screen.fill((0,0,0))
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 return
@@ -59,16 +65,13 @@ def main():
             if android.check_pause():
                 android.wait_for_resume()
                 
-        if pygame.mouse.get_pressed()[0]:
-            targeting = True
-            killShot = False
-        elif targeting:
-            killShot = True
-            targeting = False
+        if not random.randrange(baddieChance):
+            Baddie(player, random.randrange(20,80), SCREENRECT.width, SCREENRECT.height)
         #Update
-        all.update(killShot)
+        all.update(player.killShot)
+        player.update()
         #Draw
-        screen.fill((0,0,0))
+        player.draw(screen)
         all.draw(screen)
         pygame.display.flip()
 
