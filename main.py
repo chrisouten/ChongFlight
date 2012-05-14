@@ -43,9 +43,12 @@ def main():
     Baddie.containers = baddies, all
     
     Baddie(100, SCREENRECT.width, SCREENRECT.height)
+    Baddie(50, SCREENRECT.width, SCREENRECT.height)
     
     clock = pygame.time.Clock()        
     
+    killShot = False
+    targeting = False
     while 1:
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
@@ -56,8 +59,14 @@ def main():
             if android.check_pause():
                 android.wait_for_resume()
                 
+        if pygame.mouse.get_pressed()[0]:
+            targeting = True
+            killShot = False
+        elif targeting:
+            killShot = True
+            targeting = False
         #Update
-        all.update()
+        all.update(killShot)
         #Draw
         screen.fill((0,0,0))
         all.draw(screen)
