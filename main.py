@@ -4,6 +4,7 @@ from pygame.locals import *
 from baddie import Baddie
 from spritesheet import SpriteSheet
 from player import Player
+from particle import Particle
 
 try:
     import android
@@ -45,7 +46,7 @@ def main():
     baddieChance = 1000
     player = Player(screen)
     
-    
+    particle = Particle((200,200),1,2)
     clock = pygame.time.Clock()        
     
     killShot = False
@@ -67,6 +68,8 @@ def main():
         #Update
         all.update(player.killShot)
         player.update()
+        particle.update()
+        particle.draw(screen)
         #Draw
         player.draw()
         all.draw(screen)
