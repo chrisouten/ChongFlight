@@ -1,9 +1,9 @@
 import pygame, random
 from pygame.locals import *
 
-from baddie import BlueBaddie, RedBaddie
+from baddie import BlueBaddie, RedBaddie, BaddieManager, Crosshair
 from spritesheet import SpriteSheet
-from player import Player, Crosshair
+from player import Player
 from particle import ParticleManager
 
 try:
@@ -31,6 +31,7 @@ def main():
     
     BlueBaddie.image = spritesheet.imgat((0, 32, 32, 32), -1)
     RedBaddie.image = spritesheet.imgat((0,64, 32, 32), -1)
+    Crosshair.image = spritesheet.imgat((0,0,32,32), -1)
         
     pygame.display.set_caption('Chong Flight')
     
@@ -46,7 +47,7 @@ def main():
     BlueBaddie.containers = blueBaddieGroup, blueBaddieRender, all
     RedBaddie.containers = redBaddieGroup, redBaddieRender, all
     Crosshair.containers = crosshairsGroup, crosshairRender, all
-    player = Player(screen, spritesheet.imgat((0, 0, 32, 32), -1))
+    player = Player(screen)
     
     particleManager = ParticleManager(screen)
     clock = pygame.time.Clock()        
@@ -54,6 +55,7 @@ def main():
     killShot = False
     targeting = False
     initial_target = None
+    bm = BaddieManager(player, particleManager, screen)
     while 1:
         clock.tick(60)
         screen.fill((0,0,0))
@@ -67,11 +69,7 @@ def main():
                 android.wait_for_resume()
                 
         if len(blueBaddieGroup) == 0:
-            for x in range(5):
-                position = (x * 50, x * 100)
-                BlueBaddie(player, position, particleManager, 200)
-            position = (200,500)
-            RedBaddie(player, position, particleManager)
+            bm.getWave()
             
         #Update
         all.update(player.killShot)
@@ -81,6 +79,7 @@ def main():
         
         #Draw
         player.draw()
+        bm.draw()
         blueBaddieRender.draw(screen)
         redBaddieRender.draw(screen)
         crosshairRender.draw(screen)
