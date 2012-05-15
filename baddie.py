@@ -11,8 +11,8 @@ class Baddie(pygame.sprite.Sprite):
         self.distance = distance
         self.image = pygame.transform.scale(self.image, (distance, distance))
         self.rect = self.image.get_rect()
-        self.rect.left = random.randrange(screenwidth - self.rect.width)
-        self.rect.bottom = random.randrange(screenheight - self.rect.height)
+        self.rect.left = random.randrange(self.rect.width * 2, screenwidth - self.rect.width - distance * 2)
+        self.rect.bottom = random.randrange(self.rect.height * 2, screenheight - self.rect.height - distance * 2)
         
     def update(self, kill=None):
         if (pygame.mouse.get_pressed()[0]):

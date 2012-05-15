@@ -30,7 +30,6 @@ class ParticleManager:
             self.particles.append(Particle(position, 1.4 * x, 20))
 
     def update(self):
-        print len(self.particles)
         for p in self.particles:
             p.update()
             if p.remove:

@@ -3,7 +3,7 @@ from pygame.locals import *
 
 from baddie import Baddie
 from spritesheet import SpriteSheet
-from player import Player
+from player import Player, Crosshair
 from particle import ParticleManager
 
 try:
@@ -40,10 +40,14 @@ def main():
     
     
     baddies = pygame.sprite.Group()
+    crosshairs = pygame.sprite.Group()
     all = pygame.sprite.RenderPlain()
+    baddieRender = pygame.sprite.RenderPlain()
+    crosshairRender = pygame.sprite.RenderPlain()
     
-    Baddie.containers = baddies, all
-    player = Player(screen)
+    Baddie.containers = baddies, baddieRender, all
+    Crosshair.containers = crosshairs, crosshairRender, all
+    player = Player(screen, spritesheet.imgat((136, 301, 64, 64), -1))
     
     particleManager = ParticleManager(screen)
     clock = pygame.time.Clock()        
@@ -52,6 +56,7 @@ def main():
     targeting = False
     initial_target = None
     while 1:
+        clock.tick(60)
         screen.fill((0,0,0))
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
@@ -64,7 +69,7 @@ def main():
                 
         if len(baddies) == 0:
             for x in range(5):
-                Baddie(player, random.randrange(20,80), SCREENRECT.width, SCREENRECT.height, particleManager)
+                Baddie(player, random.randrange(32,64), SCREENRECT.width, SCREENRECT.height, particleManager)
                
         #Update
         all.update(player.killShot)
@@ -73,7 +78,9 @@ def main():
         particleManager.draw()
         #Draw
         player.draw()
-        all.draw(screen)
+        #all.draw(screen)
+        baddieRender.draw(screen)
+        crosshairRender.draw(screen)
         pygame.display.flip()
 
 
