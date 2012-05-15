@@ -9,6 +9,8 @@ class Player:
         self.screen = screen
         self.crosshairImage = crosshair
         self.crosshairs = []
+        self.score = 0
+        self.multiplier = 1
 
     def update(self):
         self.killShot = False
@@ -21,10 +23,15 @@ class Player:
             self.targets = []
             for ch in self.crosshairs:
                 ch.kill()
+            self.crosshairs = []
         
     def addTarget(self, targetLocation):
         self.targets.append(targetLocation)
         self.crosshairs.append(Crosshair(targetLocation, self.crosshairImage))
+        self.multiplier = len(self.targets)
+    
+    def addScore(self, score):
+        self.score = self.score + score * self.multiplier
         
     def draw(self):
         if self.targeting:

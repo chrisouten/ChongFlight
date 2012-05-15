@@ -10,6 +10,7 @@ class Baddie(pygame.sprite.Sprite):
         self.lockon = False
         self.image = random.choice(self.imagesets)
         self.distance = distance
+        self.value = 200
         self.image = pygame.transform.scale(self.image, (distance, distance))
         self.rect = self.image.get_rect()
         self.rect.left = random.randrange(self.rect.width * 2, screenwidth - self.rect.width - distance * 2)
@@ -28,6 +29,7 @@ class Baddie(pygame.sprite.Sprite):
                 self.player.addTarget(self.rect.center)
         if kill and self.lockon:
             self.pm.make_explosion(self.rect.center)
+            self.player.addScore(self.value)
             if self.bullet:
                 self.bullet.kill()
             self.kill()
