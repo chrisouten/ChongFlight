@@ -110,8 +110,8 @@ class RedBaddie(Baddie):
         if (pygame.mouse.get_pressed()[0]):
             if self.rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
                 #TODO : Call player you dead function
-                self.bm.player.reset()
                 self.bm.getWave()
+                self.bm.player.reset()
                 
     def destroy(self):
         self.kill()
