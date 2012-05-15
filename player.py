@@ -22,6 +22,10 @@ class Player:
     def addScore(self, score):
         self.score = self.score + score * self.multiplier
         
+    def reset(self):
+        self.score = 0
+        self.multiplier = 1
+        
     def draw(self):
         #Draw the score
         scoreText = self.font.render("SCORE: %s" % self.score, 1, (255, 255, 255))
