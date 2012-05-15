@@ -1,7 +1,7 @@
 import pygame, random
 from pygame.locals import *
 
-from baddie import Baddie
+from baddie import Baddie, Bullet
 from spritesheet import SpriteSheet
 from player import Player, Crosshair
 from particle import ParticleManager
@@ -35,7 +35,7 @@ def main():
         spritesheet.imgat((301, 466, 32, 32), -1),
         spritesheet.imgat((4, 499, 32, 32), -1)
         ]
-    
+    Bullet.image = spritesheet.imgat((278, 113, 13, 13), -1)
     pygame.display.set_caption('Chong Flight')
     
     
@@ -46,6 +46,7 @@ def main():
     crosshairRender = pygame.sprite.RenderPlain()
     
     Baddie.containers = baddies, baddieRender, all
+    Bullet.containers = baddies, baddieRender, all
     Crosshair.containers = crosshairs, crosshairRender, all
     player = Player(screen, spritesheet.imgat((136, 301, 64, 64), -1))
     
