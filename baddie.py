@@ -2,9 +2,10 @@ import pygame, random
 from pygame.locals import *
 
 class Baddie(pygame.sprite.Sprite):
-    def __init__(self, player, distance, screenwidth, screenheight):
+    def __init__(self, player, distance, screenwidth, screenheight, pm):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.player = player
+        self.pm = pm
         self.lockon = False
         self.image = random.choice(self.imagesets)
         self.distance = distance
@@ -21,4 +22,5 @@ class Baddie(pygame.sprite.Sprite):
                 self.lockon = True
                 self.player.addTarget(self.rect.center)
         if kill and self.lockon:
+            self.pm.make_explosion(self.rect.center)
             self.kill()

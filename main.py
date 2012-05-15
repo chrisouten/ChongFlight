@@ -4,7 +4,7 @@ from pygame.locals import *
 from baddie import Baddie
 from spritesheet import SpriteSheet
 from player import Player
-from particle import Particle
+from particle import ParticleManager
 
 try:
     import android
@@ -43,10 +43,9 @@ def main():
     all = pygame.sprite.RenderPlain()
     
     Baddie.containers = baddies, all
-    baddieChance = 1000
     player = Player(screen)
     
-    particle = Particle((200,200),1,2)
+    particleManager = ParticleManager(screen)
     clock = pygame.time.Clock()        
     
     killShot = False
@@ -63,13 +62,15 @@ def main():
             if android.check_pause():
                 android.wait_for_resume()
                 
-        if not random.randrange(baddieChance):
-            Baddie(player, random.randrange(20,80), SCREENRECT.width, SCREENRECT.height)
+        if len(baddies) == 0:
+            for x in range(5):
+                Baddie(player, random.randrange(20,80), SCREENRECT.width, SCREENRECT.height, particleManager)
+               
         #Update
         all.update(player.killShot)
         player.update()
-        particle.update()
-        particle.draw(screen)
+        particleManager.update()
+        particleManager.draw()
         #Draw
         player.draw()
         all.draw(screen)
