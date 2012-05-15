@@ -28,6 +28,7 @@ class ParticleManager:
     def make_explosion(self, position):
         for x in range(20):
             self.particles.append(Particle(position, 1.4 * x, 20))
+        
 
     def update(self):
         for p in self.particles:

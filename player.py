@@ -11,6 +11,7 @@ class Player:
         self.crosshairs = []
         self.score = 0
         self.multiplier = 1
+        self.font = pygame.font.Font('./data/GUNPLAY_.ttf', 36)
 
     def update(self):
         self.killShot = False
@@ -34,6 +35,12 @@ class Player:
         self.score = self.score + score * self.multiplier
         
     def draw(self):
+        #Draw the score
+        scoreText = self.font.render("SCORE: %s" % self.score, 1, (255, 255, 255))
+        scoreTextPos = scoreText.get_rect(centerx = self.screen.get_width()/2)
+        self.screen.blit(scoreText, scoreTextPos)
+        
+        #Draw the targeting system
         if self.targeting:
             for x in range(len(self.targets)):
                 try:

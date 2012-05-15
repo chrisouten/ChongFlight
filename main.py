@@ -1,7 +1,7 @@
 import pygame, random
 from pygame.locals import *
 
-from baddie import Baddie, Bullet
+from baddie import BlueBaddie, RedBaddie
 from spritesheet import SpriteSheet
 from player import Player, Crosshair
 from particle import ParticleManager
@@ -17,6 +17,7 @@ SCREENRECT = Rect(0,0,480,800)
 
 def main():
     pygame.init()
+    pygame.font.init()
   
     if android:
         android.init()
@@ -26,29 +27,26 @@ def main():
     bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
     screen = pygame.display.set_mode(SCREENRECT.size, winstyle, bestdepth)
 
-    spritesheet = SpriteSheet('1945.bmp')
+    spritesheet = SpriteSheet('spriteSheet.png')
     
-    Baddie.imagesets = [
-        spritesheet.imgat((4, 466, 32, 32), -1),
-        spritesheet.imgat((103, 466, 32, 32), -1),
-        spritesheet.imgat((202, 466, 32, 32), -1),
-        spritesheet.imgat((301, 466, 32, 32), -1),
-        spritesheet.imgat((4, 499, 32, 32), -1)
-        ]
-    Bullet.image = spritesheet.imgat((278, 113, 13, 13), -1)
+    BlueBaddie.image = spritesheet.imgat((0, 32, 32, 32), -1)
+    RedBaddie.image = spritesheet.imgat((0,64, 32, 32), -1)
+        
     pygame.display.set_caption('Chong Flight')
     
     
-    baddies = pygame.sprite.Group()
-    crosshairs = pygame.sprite.Group()
+    blueBaddieGroup = pygame.sprite.Group()
+    redBaddieGroup = pygame.sprite.Group()
+    crosshairsGroup = pygame.sprite.Group()
     all = pygame.sprite.RenderPlain()
-    baddieRender = pygame.sprite.RenderPlain()
+    blueBaddieRender = pygame.sprite.RenderPlain()
+    redBaddieRender = pygame.sprite.RenderPlain()
     crosshairRender = pygame.sprite.RenderPlain()
     
-    Baddie.containers = baddies, baddieRender, all
-    Bullet.containers = baddies, baddieRender, all
-    Crosshair.containers = crosshairs, crosshairRender, all
-    player = Player(screen, spritesheet.imgat((136, 301, 64, 64), -1))
+    BlueBaddie.containers = blueBaddieGroup, blueBaddieRender, all
+    RedBaddie.containers = redBaddieGroup, redBaddieRender, all
+    Crosshair.containers = crosshairsGroup, crosshairRender, all
+    player = Player(screen, spritesheet.imgat((0, 0, 32, 32), -1))
     
     particleManager = ParticleManager(screen)
     clock = pygame.time.Clock()        
@@ -68,19 +66,23 @@ def main():
             if android.check_pause():
                 android.wait_for_resume()
                 
-        if len(baddies) == 0:
+        if len(blueBaddieGroup) == 0:
             for x in range(5):
-                Baddie(player, random.randrange(32,64), SCREENRECT.width, SCREENRECT.height, particleManager)
-               
+                position = (x * 50, x * 100)
+                BlueBaddie(player, position, particleManager, 200)
+            position = (200,500)
+            RedBaddie(player, position, particleManager)
+            
         #Update
         all.update(player.killShot)
         player.update()
         particleManager.update()
         particleManager.draw()
+        
         #Draw
         player.draw()
-        #all.draw(screen)
-        baddieRender.draw(screen)
+        blueBaddieRender.draw(screen)
+        redBaddieRender.draw(screen)
         crosshairRender.draw(screen)
         pygame.display.flip()
 
