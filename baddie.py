@@ -116,6 +116,29 @@ class RedBaddie(Baddie):
     def destroy(self):
         self.kill()
         
+class BackAndForthRedBaddie(RedBaddie):
+    def __init__(self, baddieManager, position, max=50):
+        RedBaddie.__init__(self, baddieManager, position)
+        #Some back and forth goodness
+        self.timer = 0
+        self.max = max
+        self.goRight = True
+        
+    def update(self, kill=None):
+        if (self.timer == self.max):
+            self.goRight = False
+        if (self.timer == 0):
+            self.goRight = True
+        
+        if (self.goRight):
+            self.timer = self.timer + 1
+            self.rect.move_ip(2, 0)
+        else:
+            self.timer = self.timer - 1
+            self.rect.move_ip(-2, 0)
+            
+        RedBaddie.update(self, kill)
+        
 class RotatingRedBaddie(RedBaddie):
     def __init__(self, baddieManager, position, rotateCenter):
         RedBaddie.__init__(self, baddieManager, position)
@@ -159,6 +182,14 @@ class BaddieManager():
             (RotatingRedBaddie, ((200,200), (200, 400))),
             (BackAndForthBlueBaddie, ((200,600), 200)),
             (BackAndForthBlueBaddie, ((200,400), 200)),
+            (BackAndForthBlueBaddie, ((200,200), 200)),
+        ],
+        [
+            (BackAndForthRedBaddie, ((200,600), 25)),
+            (BackAndForthBlueBaddie, ((200,600), 200)),
+            (BackAndForthRedBaddie, ((200,400), 75)),
+            (BackAndForthBlueBaddie, ((200,400), 200)),
+            (BackAndForthRedBaddie, ((200,200), 25)),
             (BackAndForthBlueBaddie, ((200,200), 200)),
         ]
     ]
@@ -206,3 +237,53 @@ class Crosshair(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = position
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+#################################
+#######                    ######
+#######   Waves            ######
+#######                    ######
+#################################
+
+WAVES = {
+    0: [
+        [
+            (RedBaddie, ((100,100),)),
+            (BlueBaddie, ((200,300), 200)),
+            (ShieldedBaddie, ((250, 700), 200))
+            
+        ],
+        [
+            (BlueBaddie, ((250,500), 200)),
+            (BlueBaddie, ((100,100), 200)),
+            (BackAndForthBlueBaddie, ((200,600), 200)),
+            (RotatingRedBaddie, ((100, 200), (110, 200)))
+        ],
+        [
+            (RotatingRedBaddie, ((200,200), (200, 400))),
+            (BackAndForthBlueBaddie, ((200,600), 200)),
+            (BackAndForthBlueBaddie, ((200,400), 200)),
+            (BackAndForthBlueBaddie, ((200,200), 200)),
+        ],
+        [
+            (BackAndForthRedBaddie, ((200,600), 25)),
+            (BackAndForthBlueBaddie, ((200,600), 200)),
+            (BackAndForthRedBaddie, ((200,400), 75)),
+            (BackAndForthBlueBaddie, ((200,400), 200)),
+            (BackAndForthRedBaddie, ((200,200), 25)),
+            (BackAndForthBlueBaddie, ((200,200), 200)),
+        ]
+    ],
+    15: [
+    ],
+    30: [
+        
+    ]
+}
