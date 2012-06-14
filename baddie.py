@@ -49,8 +49,9 @@ class BlueBaddie(Baddie):
         if kill and self.lockon:
             self.destroy()
             
-    def destroy(self):
-        self.bm.particleManager.make_explosion(self.rect.center)
+    def destroy(self, explode=True):
+        if explode:
+            self.bm.particleManager.make_explosion(self.rect.center)
         self.bm.player.addScore(self.value)
         self.bm.removeTarget(self)
         if self.crosshair:
@@ -113,7 +114,7 @@ class RedBaddie(Baddie):
                 self.bm.getWave()
                 self.bm.player.reset()
                 
-    def destroy(self):
+    def destroy(self, explode=False):
         self.kill()
         
 class BackAndForthRedBaddie(RedBaddie):
@@ -205,7 +206,7 @@ class BaddieManager():
         self.targets = []
         self.player.multiplier = 1
         for b in self.currentBaddies:
-            b.destroy()
+            b.destroy(explode=False)
         wave = random.choice(self.waves)
         for info in wave:
             self.currentBaddies.append(info[0](self, *info[1]))
